@@ -162,3 +162,7 @@ cython_debug/
 
 #zipbombs
 data/minimal_paths/*.bz2
+
+#launch settings
+launch.json
+settings.json
