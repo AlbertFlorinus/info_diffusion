@@ -40,6 +40,11 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-    - name: Test tests
+    - name: Run unittests
       run: |
+        python -m unittest discover
+    - name: Run unittests without orjson
+      run: |
+        pip uninstall orjson
+        y
         python -m unittest discover
