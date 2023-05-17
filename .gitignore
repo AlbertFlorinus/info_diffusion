@@ -166,3 +166,6 @@ data/minimal_paths/*.bz2
 #launch settings
 launch.json
 settings.json
+
+#apple plz
+.DS_Store

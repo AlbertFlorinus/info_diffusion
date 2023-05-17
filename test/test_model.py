@@ -70,7 +70,6 @@ class ModelDataTest(unittest.TestCase):
         self.assertEqual(len(communciation_network.vertices()), 37103)
         self.assertEqual(len(communciation_network.hyperedges()), 309740)
 
-
 """
 if __name__ == "__main__":
     
