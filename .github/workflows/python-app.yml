@@ -23,7 +23,7 @@ jobs:
       contents: read
     # Set job outputs to values from filter step
     #outputs:
-    #  backend: ${{ steps.filter.outputs.backend }}
+    #  backend: ${{ steps.filter.outputs.test }}
     #  frontend: ${{ steps.filter.outputs.frontend }}
     steps:
     # For pull requests it's not necessary to checkout the code
@@ -42,7 +42,8 @@ jobs:
 
   build:
     needs: changes
-    if: ${{ needs.changes.outputs == 'true' }}
+    # Only run if critical changes were detected
+    if: ${{ needs.changes.outputs != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
