@@ -1,5 +1,5 @@
 import unittest
-#will the actions proceed?
+#will the actions proceed with comments here AND README changes?
 try:
     from simulation.model import CommunicationNetwork, EntityNotFound
     
