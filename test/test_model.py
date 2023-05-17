@@ -1,7 +1,8 @@
 import unittest
 
 try:
-    from simulation.model import CommunicationNetwork 
+    from simulation.model import CommunicationNetwork, EntityNotFound
+    
 except ModuleNotFoundError:
     # Add simulation to path, coverage test/test_model from workspace dir otherwise might fail
     import sys
