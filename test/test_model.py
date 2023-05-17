@@ -51,7 +51,7 @@ class ModelTest(unittest.TestCase):
     def test_raise_exceptions_vertices_no_hedge(self):
         cn_no_hedge = {'h1':[], 'h2':[]}
         with self.assertRaises(EntityNotFound) as k:
-            pass
+            ModelTest.cn.vertices('hej')
         
     
 
