@@ -74,8 +74,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r <(grep -vE '\<orjson\>' requirements.txt); fi
       
     - name: Lint with flake8
-    # fixar detta imorgon
-      if: 1==0
     #attempts to download flake8 to cover when the requirements.txt is updated and flake8 is not included
       run: |
         pip install flake8
