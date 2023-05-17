@@ -1,4 +1,5 @@
 import unittest
+
 try:
     from simulation.model import CommunicationNetwork 
 except ModuleNotFoundError:
@@ -6,6 +7,7 @@ except ModuleNotFoundError:
     import sys
     sys.path.insert(1, 'simulation')
     from model import CommunicationNetwork
+    from model import EntityNotFound
 
 class ModelTest(unittest.TestCase):
 
@@ -39,6 +41,17 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(len(ModelTest.cn.vertices('h1')), 2)
         self.assertEqual(len(ModelTest.cn.vertices('h2')), 2)
         self.assertEqual(len(ModelTest.cn.vertices('h3')), 2)
+
+    def test_raise_exceptions_vertices_wrong_hedge(self):
+        
+        with self.assertRaises(EntityNotFound):
+            ModelTest.cn.hyperedges('hej')
+
+    def test_raise_exceptions_vertices_no_hedge(self):
+        cn_no_hedge = {'h1':[], 'h2':[]}
+        with self.assertRaises('hej') as k:
+            pass
+        
     
 
 class ModelDataTest(unittest.TestCase):
@@ -49,3 +62,7 @@ class ModelDataTest(unittest.TestCase):
 
         self.assertEqual(len(communciation_network.vertices()), 37103)
         self.assertEqual(len(communciation_network.hyperedges()), 309740)
+
+if __name__ == '__main__':
+    model = ModelTest()
+    model.test_raise_exceptions_vertices()
