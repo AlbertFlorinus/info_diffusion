@@ -36,7 +36,7 @@ jobs:
           requirements:
             - 'requirements.txt'
           workflow:
-            - '.github/workflows/**'
+            - '.github/workflows/*'
 
   build:
     needs: changes
