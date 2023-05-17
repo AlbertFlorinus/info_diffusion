@@ -52,7 +52,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
-        cache-dependency-path: requirements.txt
+        cache-dependency-path: 'requirements.txt'
         architecture: x64
     - name: Install dependencies
     # installs requirements.txt but NOT orjson
@@ -67,7 +67,6 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run unittests without orjson
       run: |
-        python show orjson
         python -m unittest discover
     - name: Run unittests with orjson
     # this could be changed to only run tests which loads the json file?
