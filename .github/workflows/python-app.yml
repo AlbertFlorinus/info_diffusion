@@ -7,7 +7,7 @@ on:
   push:
     branches: [ "actions_pipeline" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "actions_pipeline" ]
 
 permissions:
   contents: read
