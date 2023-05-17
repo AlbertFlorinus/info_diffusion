@@ -52,18 +52,27 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         architecture: x64
-    - uses: actions/cache@v3
+
+    - name: restore 
+      uses: actions/cache/restore@v3
+      id: restore-cache
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+        key: ${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+
     - name: Install dependencies
     # installs requirements.txt but NOT orjson
-    
       run: |
         pip install flake8
         if [ -f requirements.txt ]; then pip install -r <(grep -vE '\<orjson\>' requirements.txt); fi
+    
+    - name: Save cache
+      uses: actions/cache/save@v3
+      id: save-cache
+      with:
+        path: ~/.cache/pip
+        key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names

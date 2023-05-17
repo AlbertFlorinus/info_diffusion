@@ -1,5 +1,4 @@
 import unittest
-#cache test
 try:
     from simulation.model import CommunicationNetwork, EntityNotFound
 
