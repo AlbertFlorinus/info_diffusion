@@ -50,7 +50,7 @@ class ModelTest(unittest.TestCase):
 
     def test_raise_exceptions_vertices_no_hedge(self):
         cn_no_hedge = {'h1':[], 'h2':[]}
-        with self.assertRaises('hej') as k:
+        with self.assertRaises(EntityNotFound) as k:
             pass
         
     
@@ -63,7 +63,3 @@ class ModelDataTest(unittest.TestCase):
 
         self.assertEqual(len(communciation_network.vertices()), 37103)
         self.assertEqual(len(communciation_network.hyperedges()), 309740)
-
-if __name__ == '__main__':
-    model = ModelTest()
-    model.test_raise_exceptions_vertices()
