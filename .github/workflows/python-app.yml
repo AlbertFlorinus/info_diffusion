@@ -51,11 +51,16 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-        cache-dependency-path: 'requirements.txt'
         architecture: x64
+    - uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
     - name: Install dependencies
     # installs requirements.txt but NOT orjson
+    
       run: |
         pip install flake8
         if [ -f requirements.txt ]; then pip install -r <(grep -vE '\<orjson\>' requirements.txt); fi
