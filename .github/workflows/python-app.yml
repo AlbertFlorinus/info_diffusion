@@ -59,7 +59,7 @@ jobs:
         path: venv
         key: ${{ runner.os }}-venv-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/*requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-venv-
+          ${{ runner.os }}-venv-${{ steps.setup-python.outputs.python-version }}-
         
     - name: Existing hash
       if: steps.setup-python.outputs.cache-hit == 'true'
@@ -76,6 +76,7 @@ jobs:
     - name: Lint with flake8
     #attempts to download flake8 to cover when the requirements.txt is updated and flake8 is not included
       run: |
+        . venv/bin/activate
         pip install flake8
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
