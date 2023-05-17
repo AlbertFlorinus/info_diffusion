@@ -2,7 +2,7 @@ import unittest
 
 from simulation.model import CommunicationNetwork
 from simulation.minimal_paths import single_source_dijkstra_vertices, single_source_dijkstra_hyperedges, DistanceType
-#cache test
+#cache test #2
 
 class MinimalPath(unittest.TestCase):
     cn = CommunicationNetwork({'h1': ['v1', 'v2'], 'h2': ['v2', 'v3'], 'h3': ['v3', 'v4']}, {'h1': 1, 'h2': 2, 'h3': 3})
