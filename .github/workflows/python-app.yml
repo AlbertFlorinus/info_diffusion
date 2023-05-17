@@ -61,6 +61,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-venv-
         
+    - name: Existing hash
+      if: steps.setup-python.outputs.cache-hit == 'true'
+      run:
+        . venv/bin/activate
     - name: Install dependencies
     # installs requirements.txt but NOT orjson
       if: steps.setup-python.outputs.cache-hit != 'true'
@@ -72,7 +76,6 @@ jobs:
     - name: Lint with flake8
     #attempts to download flake8 to cover when the requirements.txt is updated and flake8 is not included
       run: |
-        . venv/bin/activate
         pip install flake8
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
@@ -81,13 +84,11 @@ jobs:
 
     - name: Run unittests without orjson
       run: |
-        . venv/bin/activate
         python -m unittest discover
 
     - name: Run unittests with orjson
     # this could be changed to only run tests which loads the json file?
       run: |
-        . venv/bin/activate
         pip install orjson
         python -m unittest discover
         pip uninstall -y orjson
