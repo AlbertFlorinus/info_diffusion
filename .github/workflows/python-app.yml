@@ -4,14 +4,9 @@
 name: Python application
 
 on:
-  push:
-    branches: 
-      - main
-      - actions_pipeline
   pull_request:
     branches: 
       - main
-      - actions_pipeline
 
 permissions:
   contents: read
