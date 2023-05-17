@@ -11,7 +11,7 @@ except ModuleNotFoundError:
     from model import EntityNotFound
 
 class ModelTest(unittest.TestCase):
-
+    """Note to self: v1... is a node and h1... is the connection between them"""
     cn = CommunicationNetwork({'h1': ['v1', 'v2'], 'h2': ['v2', 'v3'], 'h3': ['v3', 'v4']}, {'h1': 1, 'h2': 2, 'h3': 3})
     def test_vertices(self):
         self.assertEqual(len(ModelTest.cn.vertices()), 4)
@@ -44,16 +44,23 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(len(ModelTest.cn.vertices('h3')), 2)
 
     def test_raise_exceptions_vertices_wrong_hedge(self):
-        
+        """Checks for vertices connected to hyperedges. I.e if I input 'v2' the function should return hyperedge h2"""
         with self.assertRaises(EntityNotFound):
-            ModelTest.cn.hyperedges('hej')
-
-    def test_raise_exceptions_vertices_no_hedge(self):
-        cn_no_hedge = {'h1':[], 'h2':[]}
-        with self.assertRaises(EntityNotFound) as k:
-            ModelTest.cn.vertices('hej')
-        
+            ModelTest.cn.hyperedges('v7')
     
+    def test_same_name_functionality_for_hedge(self):
+        cn_same_vertice_and_hedge_name = CommunicationNetwork({'h1':['h1', 'h2'], 'h2': ['h1', 'h3']}, {'h1': 1, 'h2': 2, 'h3': 3})
+        self.assertSetEqual(cn_same_vertice_and_hedge_name.hyperedges('h1'), {'h2', 'h1'})
+ 
+    def test_raise_exceptions_hedge_no_vertices(self):
+        """Checks for hyperedges connected to vertices. I.e if I input 'h1' the function should return v1, v2"""
+        cn_no_vertices = CommunicationNetwork({'h1': [], 'h2': [], 'h3': []}, {'h1': 1, 'h2': 2, 'h3': 3})
+        with self.assertRaises(EntityNotFound):
+            cn_no_vertices.vertices('h5')
+
+    def test_same_name_functionality_for_vertices(self):
+        cn_same_vertice_and_hedge_name = CommunicationNetwork({'h1':['h1', 'h2'], 'h2': ['h1', 'h3']}, {'h1': 1, 'h2': 2, 'h3': 3})
+        self.assertSetEqual(cn_same_vertice_and_hedge_name.vertices('h1'), {'h1', 'h2'})
 
 class ModelDataTest(unittest.TestCase):
     def test_model_with_data(self):
@@ -63,3 +70,11 @@ class ModelDataTest(unittest.TestCase):
 
         self.assertEqual(len(communciation_network.vertices()), 37103)
         self.assertEqual(len(communciation_network.hyperedges()), 309740)
+
+
+"""
+if __name__ == "__main__":
+    
+    cn = CommunicationNetwork({'h1': ['v1', 'v2'], 'h2': ['v2', 'v3'], 'h3': ['v3', 'v4']}, {'h1': 1, 'h2': 2, 'h3': 3})
+    print(type(cn.hyperedges('v2')))
+"""
