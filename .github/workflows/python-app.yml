@@ -1,20 +1,45 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# This workflow will IF changes are detected in the following folders: simulation, test, requirements.txt, .github/workflows,
+# run lint and run unittests for python 3.10 and 3.10, with and without orjson
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
 name: Python application
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: 
+      - main
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
-  build:
+  # JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+      contents: read
+    # Set job outputs to values from filter step
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v2.11.1
+      id: filter
+      with:
+        filters: |
+          test:
+            - 'test/**'
+          simulation:
+            - 'simulation/**'
+          requirements:
+            - 'requirements.txt'
+          workflow:
+            - '.github/workflows/*'
 
+  build:
+    needs: changes
+    # Only run if critical changes were detected
+    if: ${{ needs.changes.outputs != '[]' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,9 +52,10 @@ jobs:
         python-version: ${{ matrix.python-version }}
         architecture: x64
     - name: Install dependencies
+    # installs requirements.txt but NOT orjson
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8
         if [ -f requirements.txt ]; then pip install -r <(grep -vE '\<orjson\>' requirements.txt); fi
     - name: Lint with flake8
       run: |
@@ -37,10 +63,11 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Run unittests
+    - name: Run unittests without orjson
       run: |
         python -m unittest discover
-    - name: Run unittests without orjson
+    - name: Run unittests with orjson
+    # this could be changed to only run tests which loads the json file?
       run: |
         pip install orjson
         python -m unittest discover
