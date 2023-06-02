@@ -48,7 +48,7 @@ class MinimalPath(unittest.TestCase):
         result_2 = single_source_dijkstra_hyperedges(MinimalPath.cn, 'v1', DistanceType.FOREMOST, min_timing=0)
         self.assertEqual(result_1, result_2, 'Single-source Dijkstra implementations are not equivalent')
 
-    ### error handling tests ###
+    ### edge-case/error handling tests ###
 
     def test_none_communication_network(self):
         with self.assertRaises(AttributeError):
